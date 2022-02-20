@@ -1,18 +1,16 @@
-package mailreader;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MailParser {
+public class BodyParser {
     private final String mailBody;
 
-    public MailParser(String mailBody){
+    public BodyParser(String mailBody){
         this.mailBody = mailBody;
     }
 
-    private String parseUsingRegex(String regex, String source){
+    private String parseBodyUsingRegex(String regex){
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(source);
+        Matcher matcher = pattern.matcher(this.mailBody);
         if (matcher.find()){
             return matcher.group(1);
         } else {
@@ -23,7 +21,8 @@ public class MailParser {
 
     public String getFreezoneCode(){
         try {
-            return parseUsingRegex("([0-9]{6})", this.mailBody);
+            String codePattern = "([0-9]{6})";
+            return parseBodyUsingRegex(codePattern);
         } catch (Error e){
             throw new Error("Unable to parse freezone code due to:\n" + e);
         }
@@ -31,7 +30,8 @@ public class MailParser {
 
     public String getFreezoneSignupLink(){
         try {
-            return parseUsingRegex("(https.+)", this.mailBody);
+            String signupLinkPattern = "(https.+)";
+            return parseBodyUsingRegex(signupLinkPattern);
         } catch (Error e){
             throw new Error("Unable to parse freezone signup link due to:\n" + e);
         }

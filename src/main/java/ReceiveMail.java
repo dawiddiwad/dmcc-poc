@@ -1,4 +1,3 @@
-import mailreader.MailParser;
 import org.apache.commons.mail.util.MimeMessageParser;
 
 import javax.mail.*;
@@ -41,13 +40,13 @@ public class ReceiveMail {
                 System.out.println("From - " + message.getFrom()[0]);
 
                 if (message.isMimeType("multipart/alternative")){
-                    MailParser mailParser = new MailParser(new MimeMessageParser((MimeMessage) message).parse().getPlainContent());
+                    BodyParser bodyParser = new BodyParser(new MimeMessageParser((MimeMessage) message).parse().getPlainContent());
 //                    System.out.println("freezone code is: " + mailParser.getFreezoneCode());
-                    System.out.println("freezone signup link is: " + mailParser.getFreezoneSignupLink());
+                    System.out.println("freezone signup link is: " + bodyParser.getFreezoneSignupLink());
 
-                    mailParser = new MailParser(new MimeMessageParser((MimeMessage) message).parse().getHtmlContent());
+                    bodyParser = new BodyParser(new MimeMessageParser((MimeMessage) message).parse().getHtmlContent());
 //                    System.out.println("freezone code is: " + mailParser.getFreezoneCode());
-                    System.out.println("freezone signup link is: " + mailParser.getFreezoneSignupLink());
+                    System.out.println("freezone signup link is: " + bodyParser.getFreezoneSignupLink());
 
                     System.out.println(new MimeMessageParser((MimeMessage) message).parse().getPlainContent());
                     System.out.println(new MimeMessageParser((MimeMessage) message).parse().getHtmlContent());
