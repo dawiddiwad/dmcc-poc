@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,6 +84,47 @@ public class TestRunner {
 
         page.click("//div[@title='New']");
         page.click("//span[text()='Next']");
+
+        page.fill("//input[@name='firstName']", "DMCC automation poc " + new Date());
+        page.fill("//input[@name='lastName']", "DMCC automation poc " + new Date());
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='Lead Source']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Web']");
+
+        page.fill("//input[@name='Email']", "dmccinboxqa@gmail.com");
+        page.fill("//input[@name='Company']", "DMCC automation poc " + new Date());
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='Origin Country']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Afghanistan']");
+
+        page.fill("//input[@name='Country_code__c']", "92");
+        page.fill("//input[@name='Area_code__c']", "92");
+        page.fill("//input[@name='Phone_No__c']", String.valueOf(Math.random()*10));
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='Company Type']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='New Company']");
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='Activity Type']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Service']");
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='Company Setup']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Immediately']");
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='How did you hear about us (1)']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Advertising / News / Editorial']");
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='How did you hear about us (2)']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Email Advertising']");
+
+        page.fill("(//textarea[ancestor::div[preceding-sibling::label[text()='Description']]])[1]", "QA services");
+
+        page.click("(//span[ancestor::div[preceding-sibling::label[text()='Address Country']]])[1]");
+        page.click("//lightning-base-combobox-item[@data-value='Afghanistan']");
+
+        page.click("//button[@name='SaveEdit']");
+        page.waitForLoadState(LoadState.NETWORKIDLE);
+
+        page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("leadCreation.png")));
     }
 
     @Test
