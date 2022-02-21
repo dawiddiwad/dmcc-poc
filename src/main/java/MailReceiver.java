@@ -36,6 +36,9 @@ public class MailReceiver {
             Message message = emailMessages[0];
             if (message.isMimeType("multipart/alternative")){
                 latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getPlainContent();
+                if (latestMessageBody == null || latestMessageBody.equals("")){
+                    latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getHtmlContent();
+                }
             } else {
                 latestMessageBody = message.getContent().toString();
             }
