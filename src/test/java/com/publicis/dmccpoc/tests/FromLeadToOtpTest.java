@@ -45,15 +45,19 @@ public class FromLeadToOtpTest {
 
     @Test
     void shouldCreateLeadAndReceiveCode(){
-        LoginPage.authorizeOn(page, LoginPage.Environment.QA);
+        //Authenticate SFDC sandbox
+        LoginPage.authenticateUsing(page, LoginPage.Environment.QA);
 
+        //Navigate to Leads listview
         page.click(NavigationBar.APP_LAUNCHER);
         page.fill(NavigationBar.APP_LAUNCHER_SEARCH_FIELD, "Leads");
         page.click(NavigationBar.getAppLauncherSearchResultsItemByLabel("Leads"));
 
+        //Create new Lead
         page.click(ListView.NEW_BUTTON);
         page.click(Modal.NEXT_BUTTON);
 
+        //Handle picklists
         Lead.fillPicklistWithValue(page, "Lead Source", "Web");
         Lead.fillPicklistWithValue(page, "Origin Country", "Afghanistan");
         Lead.fillPicklistWithValue(page, "Company Type", "New Company");
@@ -63,6 +67,7 @@ public class FromLeadToOtpTest {
         Lead.fillPicklistWithValue(page, "How did you hear about us (2)", "Email Advertising");
         Lead.fillPicklistWithValue(page, "Address Country", "Afghanistan");
 
+        //Fill out rest of mandatory fields and save Lead
         page.fill(Lead.FIRST_NAME, TestData.getRandomFirstName());
         page.fill(Lead.LAST_NAME, TestData.getRandomLastName());
         page.fill(Lead.EMAIL, "dmccinboxqa@gmail.com");
@@ -73,25 +78,31 @@ public class FromLeadToOtpTest {
         page.fill(Lead.DESCRIPTION, "QA services");
         page.click(Lead.SAVE_BUTTON);
 
+        //Convert Lead
         page.click(HighlightsPanel.CONVERT_BUTTON);
         page.click(LeadConvert.CONVERT_BUTTON, new Page.ClickOptions().setDelay(2000));
         page.click(LeadConvert.OPPORTUNITY_LINK);
 
+        //Edit Opportunity
         page.click(HighlightsPanel.EDIT_BUTTON);
         Opportunity.selectItemOnLookup(page, "SR Template", "201-New Company Application L2L");
         page.fill(Opportunity.LEAD_EMAIL, "dmccinboxqa@gmail.com");
         page.click(Opportunity.SAVE_BUTTON);
 
+        //Save Opportunity as a 'Convincing Customer'
         page.click(StagesPath.CHANGE_CLOSED_STAGE_BUTTON);
         StagesPath.fillPicklistWithValue(page, "StageName", "Convincing Customer");
         page.click(StagesPath.DONE_BUTTON);
 
+        //fetch Freezone Portal signup link and navigate to it
         TestData.getUrlAndNavigateToPortalSingupUsing(page);
 
+        //Fill out passwords and proceed to the OTP page
         page.fill(PortalPassword.PASSWORD, TestData.getDummyPassword());
         page.fill(PortalPassword.PASSWORD_CONFIRM, TestData.getDummyPassword());
         page.click(PortalPassword.SIGNUP_BUTTON);
 
+        //Take screenshot on OTP page
         page.waitForLoadState(LoadState.NETWORKIDLE);
         page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshots/SignupPortal.png")));
     }

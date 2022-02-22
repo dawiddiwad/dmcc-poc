@@ -24,7 +24,7 @@ public class LoginPage {
         page.click(LOGIN_BUTTON);
     }
 
-    public static void authorizeOn(Page page, Environment environment){
+    public static void authenticateUsing(Page page, Environment environment){
         switch (environment){
             case QA:
                 login(page, TEST_URL ,"sys.admin@dmcc.qa", "Salesforce@3");
