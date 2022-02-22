@@ -1,3 +1,5 @@
+package com.publicis.dmccpoc.utils.mailhandler;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

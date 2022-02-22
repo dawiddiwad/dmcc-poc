@@ -1,3 +1,5 @@
+package com.publicis.dmccpoc.utils.mailhandler;
+
 import org.apache.commons.mail.util.MimeMessageParser;
 
 import javax.mail.*;
