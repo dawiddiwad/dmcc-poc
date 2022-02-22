@@ -35,11 +35,16 @@ public class FromLeadToOtpTest {
             .setScreenSize(1366, 768)
             .setRecordVideoDir(Paths.get("videos/"))
             .setRecordVideoSize(1366, 768));
+        context.tracing().start(new Tracing.StartOptions()
+                .setScreenshots(true)
+                .setSnapshots(true));
         page = context.newPage();
     }
 
     @AfterEach
     void closeContext() {
+        context.tracing().stop(new Tracing.StopOptions()
+                .setPath(Paths.get("traces/latest.zip")));
         context.close();
     }
 
