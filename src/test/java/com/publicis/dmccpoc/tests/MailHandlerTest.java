@@ -2,6 +2,7 @@ package com.publicis.dmccpoc.tests;
 
 import com.publicis.dmccpoc.utils.mailhandler.BodyParser;
 import com.publicis.dmccpoc.utils.mailhandler.MailReceiver;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
@@ -10,6 +11,11 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MailHandlerTest {
+    @Test
+    void shouldReceiveEmail() {
+        Assertions.assertNotNull(MailReceiver.getLatestMessageBody());
+    }
+
     @Test
     void shouldParseCodeFromEmail() {
         BodyParser bodyParser = new BodyParser(MailReceiver.getLatestMessageBody());

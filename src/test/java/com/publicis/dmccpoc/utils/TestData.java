@@ -32,6 +32,11 @@ public class TestData {
         return "Qwerty1234$";
     }
 
+    public static String getDummyEmailAddress() {
+        return "dmccinboxqa@gmail.com";
+//        return "dawid.dobrowolski@publicissapient.com";
+    }
+
     public static void getUrlAndNavigateToPortalSingupUsing(Page page){
         await()
             .atMost(30000, TimeUnit.MILLISECONDS)

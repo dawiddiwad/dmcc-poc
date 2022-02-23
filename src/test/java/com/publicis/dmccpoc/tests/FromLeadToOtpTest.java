@@ -7,30 +7,25 @@ import com.publicis.dmccpoc.locators.sfdc.*;
 import com.publicis.dmccpoc.locators.sfdc.editview.Lead;
 import com.publicis.dmccpoc.locators.sfdc.editview.Opportunity;
 import com.publicis.dmccpoc.utils.TestData;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.TestInstance;
 
 import java.nio.file.Paths;
+import java.util.Date;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class FromLeadToOtpTest {
-    static Playwright playwright;
-    static Browser browser;
-
+    Playwright playwright;
+    Browser browser;
     BrowserContext context;
     Page page;
 
-    @BeforeAll
-    static void launchBrowser() {
-        playwright = Playwright.create();
-        browser = playwright.webkit().launch(new BrowserType.LaunchOptions().setHeadless(false));
-    }
-
-    @AfterAll
-    static void closeBrowser() {
-        playwright.close();
-    }
-
     @BeforeEach
     void createContextAndPage() {
+        playwright = Playwright.create();
+        browser = playwright.webkit().launch(new BrowserType.LaunchOptions().setHeadless(false));
         context = browser.newContext(new Browser.NewContextOptions()
             .setScreenSize(1366, 768)
             .setRecordVideoDir(Paths.get("videos/"))
@@ -44,11 +39,12 @@ public class FromLeadToOtpTest {
     @AfterEach
     void closeContext() {
         context.tracing().stop(new Tracing.StopOptions()
-                .setPath(Paths.get("traces/latest.zip")));
+                .setPath(Paths.get("traces/trace - " + new Date().getTime() +".zip")));
         context.close();
+        playwright.close();
     }
 
-    @Test
+    @RepeatedTest(1)
     void shouldCreateLeadAndReceiveCode(){
         //Authenticate SFDC sandbox
         LoginPage.authenticateUsing(page, LoginPage.Environment.QA);
@@ -75,7 +71,7 @@ public class FromLeadToOtpTest {
         //Fill out rest of mandatory fields and save Lead
         page.fill(Lead.FIRST_NAME, TestData.getRandomFirstName());
         page.fill(Lead.LAST_NAME, TestData.getRandomLastName());
-        page.fill(Lead.EMAIL, "dmccinboxqa@gmail.com");
+        page.fill(Lead.EMAIL, TestData.getDummyEmailAddress());
         page.fill(Lead.COMPANY, TestData.getRandomCompanyName());
         page.fill(Lead.COUNTRY_CODE, "92");
         page.fill(Lead.AREA_CODE, "92");
@@ -91,7 +87,7 @@ public class FromLeadToOtpTest {
         //Edit Opportunity
         page.click(HighlightsPanel.EDIT_BUTTON);
         Opportunity.selectItemOnLookup(page, "SR Template", "201-New Company Application L2L");
-        page.fill(Opportunity.LEAD_EMAIL, "dmccinboxqa@gmail.com");
+        page.fill(Opportunity.LEAD_EMAIL, TestData.getDummyEmailAddress());
         page.click(Opportunity.SAVE_BUTTON);
 
         //Save Opportunity as a 'Convincing Customer'

@@ -29,27 +29,24 @@ public class MailReceiver {
             folder.open(Folder.READ_ONLY);
 
             Message[] emailMessages = folder.getMessages();
-            System.out.println("Total Message - " + emailMessages.length);
-
             if (emailMessages.length == 0){
                 throw new Error("No new messages");
             }
+            System.out.println("Total Message - " + emailMessages.length);
 
             Message message = emailMessages[0];
-            if (message.isMimeType("multipart/alternative")){
-                latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getPlainContent();
-                if (latestMessageBody == null || latestMessageBody.equals("")){
-                    latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getHtmlContent();
-                }
-            } else {
-                latestMessageBody = message.getContent().toString();
+            latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getPlainContent();
+            if (latestMessageBody == null || latestMessageBody.equals("")){
+                latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getHtmlContent();
             }
+
             folder.close(false);
             mailStore.close();
-            return latestMessageBody;
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new Error("Not able to receive latest email");
         }
+        return latestMessageBody;
     }
 }
