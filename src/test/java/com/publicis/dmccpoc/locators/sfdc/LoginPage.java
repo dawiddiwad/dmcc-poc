@@ -27,7 +27,7 @@ public class LoginPage {
     public static void authenticateUsing(Page page, Environment environment){
         switch (environment){
             case QA:
-                login(page, TEST_URL ,"sys.admin@dmcc.qa", "Salesforce@3");
+                login(page, TEST_URL ,"sys.admin@dmcc.qa", "Salesforce@4");
                 break;
             case UAT:
                 login(page, TEST_URL ,"sanchit.mittal@dmcc.uat", "Sapient@23");

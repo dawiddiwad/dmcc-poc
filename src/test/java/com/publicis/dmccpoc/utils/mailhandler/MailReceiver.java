@@ -32,7 +32,7 @@ public class MailReceiver {
             if (emailMessages.length == 0){
                 throw new Error("No new messages");
             }
-            System.out.println("Total Message - " + emailMessages.length);
+            System.out.println("Total Messages - " + emailMessages.length);
 
             Message message = emailMessages[0];
             latestMessageBody = new MimeMessageParser((MimeMessage) message).parse().getPlainContent();
